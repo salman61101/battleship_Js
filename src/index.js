@@ -1,9 +1,16 @@
 import "./style.css";
 
-import { human, computer } from "./game.js";
+import { startGame } from "./game.js";
 
-import { renderBoards } from "./ui.js";
+import {
+    renderBoards,
+    setupRestart
+} from "./ui.js";
 
-renderBoards(human, computer);
+startGame();
+
+renderBoards();
+
+setupRestart();
 
 console.log("Battleship Loaded");

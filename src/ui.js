@@ -1,12 +1,24 @@
-export function renderBoards(human, computer) {
+import {
+    human,
+    computer,
+    playerAttack,
+    computerAttack,
+    checkWinner,
+    getCurrentTurn,
+    restartGame
+} from "./game.js";
 
-    renderPlayerBoard(human);
+export function renderBoards() {
 
-    renderComputerBoard(computer);
+    renderPlayerBoard();
+
+    renderComputerBoard();
+
+    updateStatus();
 
 }
 
-function renderPlayerBoard(player) {
+function renderPlayerBoard() {
 
     const board =
         document.getElementById("player-board");
@@ -23,17 +35,30 @@ function renderPlayerBoard(player) {
             cell.classList.add("cell");
 
             const ship =
-                player.gameboard.ships.find(ship =>
+                human.gameboard.ships.find(ship =>
                     ship.positions.some(
-                        pos =>
-                            pos[0] === x &&
-                            pos[1] === y
+                        position =>
+                            position[0] === x &&
+                            position[1] === y
                     )
                 );
 
             if (ship) {
 
                 cell.classList.add("ship");
+
+            }
+
+            const hit =
+                human.gameboard.missedAttacks.find(
+                    attack =>
+                        attack[0] === x &&
+                        attack[1] === y
+                );
+
+            if (hit) {
+
+                cell.classList.add("miss");
 
             }
 
@@ -45,7 +70,7 @@ function renderPlayerBoard(player) {
 
 }
 
-function renderComputerBoard(player) {
+function renderComputerBoard() {
 
     const board =
         document.getElementById("computer-board");
@@ -63,41 +88,42 @@ function renderComputerBoard(player) {
 
             cell.addEventListener("click", () => {
 
-                player.gameboard.receiveAttack(x, y);
+                const played =
+                    playerAttack(x, y);
 
-                updateEnemyBoard(player);
+                if (!played) {
+
+                    return;
+
+                }
+
+                computerAttack();
+
+                renderBoards();
+
+                const winner =
+                    checkWinner();
+
+                if (winner) {
+
+                    const status =
+                        document.getElementById("status");
+
+                    status.textContent =
+                        winner === "human"
+                            ? "🎉 You Win!"
+                            : "💀 Computer Wins!";
+
+                }
 
             });
 
-            board.appendChild(cell);
-
-        }
-
-    }
-
-}
-
-function updateEnemyBoard(player) {
-
-    const board =
-        document.getElementById("computer-board");
-
-    const cells = board.children;
-
-    let index = 0;
-
-    for (let y = 0; y < 10; y++) {
-
-        for (let x = 0; x < 10; x++) {
-
-            const cell = cells[index];
-
             const ship =
-                player.gameboard.ships.find(ship =>
+                computer.gameboard.ships.find(ship =>
                     ship.positions.some(
-                        pos =>
-                            pos[0] === x &&
-                            pos[1] === y
+                        position =>
+                            position[0] === x &&
+                            position[1] === y
                     )
                 );
 
@@ -107,26 +133,56 @@ function updateEnemyBoard(player) {
 
             }
 
-            if (
+            const miss =
+                computer.gameboard.missedAttacks.find(
+                    attack =>
+                        attack[0] === x &&
+                        attack[1] === y
+                );
 
-                player.gameboard.missedAttacks.some(
-
-                    miss =>
-                        miss[0] === x &&
-                        miss[1] === y
-
-                )
-
-            ) {
+            if (miss) {
 
                 cell.classList.add("miss");
 
             }
 
-            index++;
+            board.appendChild(cell);
 
         }
 
     }
+
+}
+
+function updateStatus() {
+
+    const status =
+        document.getElementById("status");
+
+    if (!status) {
+
+        return;
+
+    }
+
+    status.textContent =
+        getCurrentTurn() === "human"
+            ? "Your Turn"
+            : "Computer's Turn";
+
+}
+
+export function setupRestart() {
+
+    const button =
+        document.getElementById("restart-btn");
+
+    button.addEventListener("click", () => {
+
+        restartGame();
+
+        renderBoards();
+
+    });
 
 }
