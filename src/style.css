@@ -114,19 +114,21 @@ button:hover {
 
 .ship {
 
-    background: #22c55e;
+    background: #16a34a;
 
 }
 
 .hit {
 
-    background: crimson;
+    background: #ef4444;
+
+    animation: pop .2s ease;
 
 }
 
 .miss {
 
-    background: #94a3b8;
+    background: #64748b;
 
 }
 
@@ -137,6 +139,22 @@ button:hover {
         flex-direction: column;
 
         align-items: center;
+
+    }
+
+}
+
+@keyframes pop {
+
+    from {
+
+        transform: scale(.7);
+
+    }
+
+    to {
+
+        transform: scale(1);
 
     }
 

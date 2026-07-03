@@ -23,40 +23,45 @@ export function startGame() {
 
 function placeShips(player) {
 
-    player.gameboard.placeShip(
-        0,
-        0,
-        5,
-        "horizontal"
-    );
+    const ships = [5, 4, 3, 3, 2];
 
-    player.gameboard.placeShip(
-        2,
-        3,
-        4,
-        "vertical"
-    );
+    ships.forEach(length => {
 
-    player.gameboard.placeShip(
-        6,
-        1,
-        3,
-        "horizontal"
-    );
+        let placed = false;
 
-    player.gameboard.placeShip(
-        7,
-        6,
-        3,
-        "vertical"
-    );
+        while (!placed) {
 
-    player.gameboard.placeShip(
-        4,
-        8,
-        2,
-        "horizontal"
-    );
+            const direction =
+                Math.random() > 0.5
+                    ? "horizontal"
+                    : "vertical";
+
+            const x =
+                Math.floor(Math.random() * 10);
+
+            const y =
+                Math.floor(Math.random() * 10);
+
+            try {
+
+                player.gameboard.placeShip(
+                    x,
+                    y,
+                    length,
+                    direction
+                );
+
+                placed = true;
+
+            }
+
+            catch {
+
+            }
+
+        }
+
+    });
 
 }
 

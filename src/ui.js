@@ -88,6 +88,12 @@ function renderComputerBoard() {
 
             cell.addEventListener("click", () => {
 
+                if (checkWinner()) {
+
+                    return;
+
+                }
+
                 const played =
                     playerAttack(x, y);
 
@@ -111,8 +117,12 @@ function renderComputerBoard() {
 
                     status.textContent =
                         winner === "human"
-                            ? "🎉 You Win!"
-                            : "💀 Computer Wins!";
+                            ? "🏆 Congratulations! You sank every enemy ship!"
+                            : "💀 The computer destroyed your fleet!";
+
+                    document
+                        .getElementById("restart-btn")
+                        .textContent = "Play Again";
 
                 }
 
@@ -180,6 +190,8 @@ export function setupRestart() {
     button.addEventListener("click", () => {
 
         restartGame();
+
+        button.textContent = "Restart Game";
 
         renderBoards();
 
