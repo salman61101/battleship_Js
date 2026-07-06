@@ -4,10 +4,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-  "start": "webpack serve",
-  "build": "webpack",
-  "test": "jest"
-},
+    "start": "webpack serve",
+    "build": "webpack",
+    "test": "jest"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -17,6 +17,7 @@
     "@babel/preset-env": "^7.29.7",
     "babel-jest": "^30.4.1",
     "css-loader": "^7.1.4",
+    "gh-pages": "^6.3.0",
     "html-webpack-plugin": "^5.6.7",
     "jest": "^30.4.2",
     "style-loader": "^4.0.0",
