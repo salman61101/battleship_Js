@@ -15,15 +15,21 @@ export function startGame() {
 
     currentTurn = "human";
 
-    placeShips(human);
+    randomizeShips(human);
 
-    placeShips(computer);
+    randomizeShips(computer);
 
 }
 
-function placeShips(player) {
+export function randomizeShips(player) {
 
     const ships = [5, 4, 3, 3, 2];
+
+    player.gameboard.ships = [];
+
+    player.gameboard.missedAttacks = [];
+
+    player.gameboard.hitAttacks = [];
 
     ships.forEach(length => {
 
@@ -73,22 +79,18 @@ export function playerAttack(x, y) {
 
     }
 
-    const alreadyPlayed =
-        playerAttacks.some(
-            attack =>
-                attack[0] === x &&
-                attack[1] === y
-        );
+    const wasPlayed =
+        computer.gameboard.wasAttacked(x, y);
 
-    if (alreadyPlayed) {
+    if (wasPlayed) {
 
         return false;
 
     }
 
-    playerAttacks.push([x, y]);
-
     computer.gameboard.receiveAttack(x, y);
+
+    playerAttacks.push([x, y]);
 
     currentTurn = "computer";
 
@@ -113,11 +115,7 @@ export function computerAttack() {
             Math.floor(Math.random() * 10);
 
         const played =
-            computerAttacks.some(
-                attack =>
-                    attack[0] === x &&
-                    attack[1] === y
-            );
+            human.gameboard.wasAttacked(x, y);
 
         if (played) {
 

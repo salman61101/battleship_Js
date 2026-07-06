@@ -35,13 +35,7 @@ function renderPlayerBoard() {
             cell.classList.add("cell");
 
             const ship =
-                human.gameboard.ships.find(ship =>
-                    ship.positions.some(
-                        position =>
-                            position[0] === x &&
-                            position[1] === y
-                    )
-                );
+                human.gameboard.getShipAt(x, y);
 
             if (ship) {
 
@@ -50,13 +44,26 @@ function renderPlayerBoard() {
             }
 
             const hit =
-                human.gameboard.missedAttacks.find(
+                human.gameboard.hitAttacks.find(
                     attack =>
                         attack[0] === x &&
                         attack[1] === y
                 );
 
             if (hit) {
+
+                cell.classList.add("hit");
+
+            }
+
+            const miss =
+                human.gameboard.missedAttacks.find(
+                    attack =>
+                        attack[0] === x &&
+                        attack[1] === y
+                );
+
+            if (miss) {
 
                 cell.classList.add("miss");
 
@@ -128,16 +135,14 @@ function renderComputerBoard() {
 
             });
 
-            const ship =
-                computer.gameboard.ships.find(ship =>
-                    ship.positions.some(
-                        position =>
-                            position[0] === x &&
-                            position[1] === y
-                    )
+            const hit =
+                computer.gameboard.hitAttacks.find(
+                    attack =>
+                        attack[0] === x &&
+                        attack[1] === y
                 );
 
-            if (ship && ship.hits > 0) {
+            if (hit) {
 
                 cell.classList.add("hit");
 
@@ -192,6 +197,23 @@ export function setupRestart() {
         restartGame();
 
         button.textContent = "Restart Game";
+
+        renderBoards();
+
+    });
+
+}
+
+export function setupRandomPlacement() {
+
+    const button =
+        document.getElementById("random-placement-btn");
+
+    button.addEventListener("click", () => {
+
+        restartGame();
+
+        button.textContent = "Randomize Fleets";
 
         renderBoards();
 
