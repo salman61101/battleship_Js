@@ -10,7 +10,7 @@ This project was developed focusing on object-oriented programming, modular arch
 
 
 
-images/battleship.png
+![Battleship screenshot](images/battleship.png)
 
 
 ---
